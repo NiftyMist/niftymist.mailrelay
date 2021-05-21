@@ -1,0 +1,5 @@
+---
+# defaults file for niftymist.mailrelay
+mailrelay_packages:
+  - postfix
+  - libsas12-modules

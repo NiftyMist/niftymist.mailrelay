@@ -1,0 +1,19 @@
+---
+# tasks file for niftymist.mailrelay
+- name: install required packages
+  package:
+    name: "{{ mailrelay_packages }}"
+    state: present
+  register: package_install
+  ignore_errors: true
+
+- name: update apt cache if needed
+  apt:
+    update_cache: true
+  when: package_install.failed
+
+- name: install required packages if failed
+  package:
+    name: "{{ mailrealy_packages }}"
+    state: present
+  when: package_install.failed
