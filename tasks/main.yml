@@ -14,6 +14,6 @@
 
 - name: install required packages if failed
   package:
-    name: "{{ mailrealy_packages }}"
+    name: "{{ mailrelay_packages }}"
     state: present
   when: package_install.failed
