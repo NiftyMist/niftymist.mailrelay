@@ -1,0 +1,43 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+smtpd_banner = {{ ansible_fqdn }}
+biff = no
+
+
+append_dot_mydomain = no
+
+readme_directory = no
+
+compatibility_level = 2
+
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+mydomain = {{ mailrelay_mydomain }}
+myhostname = {{ mailrealy_myhostname }}
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, {{ mailrelay_mydomain }}, media, localhost.localdomain, localhost
+masquerade_domains = {{ mailrelay_mydomain }}
+relayhost = {{ mailrelay_relayhost }}:{{ mailrelay_port }}
+mynetworks = {{ mailrelay_mynetworks | join(', ') }}
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+smtp_sasl_auth_enabled = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path  = private/auth
+
+# outbound relay configurations
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_tls_security_level = may
+header_size_limit = 4096000

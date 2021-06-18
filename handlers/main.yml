@@ -1,2 +1,7 @@
 ---
 # handlers file for niftymist.mailrelay
+- name: restart postfix
+  service:
+    name: postfix
+    state: restarted
+    enabled: yes

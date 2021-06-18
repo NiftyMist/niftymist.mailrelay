@@ -17,3 +17,12 @@
     name: "{{ mailrelay_packages }}"
     state: present
   when: package_install.failed
+
+- name: deploy postfix config
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart postfix
